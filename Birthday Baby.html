@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ตั้งค่าพื้นหลังและจัดให้อยู่กึ่งกลาง */
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #ffb6c1, #ffc0cb); /* พื้นหลังสีชมพู */
+            font-family: 'Mali', cursive; /* ใช้ฟอนต์ลายมือที่ดึงมา */
+            overflow: hidden; /* ป้องกันหน้าจอเลื่อนเวลาพลุเด้ง */
+        }
+
+        /* ตกแต่งกล่องข้อความ */
+        .message-box {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            text-align: center;
+            z-index: 10; /* ให้อยู่เหนือเอฟเฟกต์พลุ */
+            max-width: 80%;
+            animation: popIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        h1 {
+            color: #ff1493;
+            margin-bottom: 15px;
+            font-size: 2.5em;
+            font-weight: 600;
+        }
+
+        p {
+            color: #333;
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        /* อนิเมชันให้กล่องข้อความเด้งขึ้นมาตอนเปิด */
+        @keyframes popIn {
+            0% { transform: scale(0); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* -------------------------------------- */
+        /* CSS สำหรับดอกทิวลิปสีปกติที่ร่วงลงมา */
+        /* -------------------------------------- */
+        .falling-tulip {
+            position: absolute;
+            top: -10vh;
+            z-index: 5; /* ให้อยู่หลังกล่องข้อความ */
+            filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.15)); /* เพิ่มเงาให้ดูมีมิติ */
+            animation: fall linear forwards, sway 3s ease-in-out infinite alternate;
+            user-select: none;
+        }
+
+        @keyframes fall {
+            to { top: 110vh; }
+        }
+
+        @keyframes sway {
+            from { transform: translateX(-20px) rotate(-15deg); }
+            to { transform: translateX(20px) rotate(15deg); }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+
+    <div class="message-box">
+        <h1>Happy Birthday🎂🐰🌷</h1>
+        <p>สุขสันต์วันเกิดนะค้าบ<br>ปีนี้ 23 แล้วนะเก่งมากเลยที่เดินทางมาถึงวันนี้ได้ ต่อไปนี้ก็ขอให้มีความสุขเยอะ ๆ ทำอะไรให้สมหวังทุก ๆ อย่าง ประสบความสำเร็จมีเงินเยอะ ๆ เลย และก็อยู่ด้วยกันไปนาน ๆ นะ รักมากกก🤍</p>
+    </div>
+
+    <script>
+        function shootFireworks() {
+            var duration = 10 * 1000; // ระยะเวลาที่พลุจะยิง (10 วินาที)
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 60, spread: 100, ticks: 110, zIndex: 0, scalar: 1.2 };
+
+            function randomInRange(min, max) {
+                return Math.random() * (max - min) + min;
+            }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+
+                if (timeLeft <= 0) {
+                    clearInterval(interval);
+                    // *** เมื่อพลุจบ รอ 1.5 วินาทีแล้วปล่อยดอกทิวลิป ***
+                    setTimeout(startTulips, 1500);
+                    return;
+                }
+
+                var particleCount = 80 * (timeLeft / duration);
+                
+                // ยิงพลุจากฝั่งซ้ายล่างของจอ
+                confetti(Object.assign({}, defaults, { 
+                    particleCount,
+                    origin: { x: randomInRange(0.1, 0.3), y: 1 },
+                    colors: ['#ff69b4', '#ff1493', '#ffffff', '#ffd700']
+                }));
+                // ยิงพลุจากฝั่งขวาล่างของจอ
+                confetti(Object.assign({}, defaults, { 
+                    particleCount,
+                    origin: { x: randomInRange(0.7, 0.9), y: 1 },
+                    colors: ['#ff69b4', '#ff1493', '#ffffff', '#ffd700']
+                }));
+            }, 250);
+        }
+
+        // *** ฟังก์ชันสร้างดอกทิวลิปร่วงหล่น ***
+        function startTulips() {
+            setInterval(function() {
+                var tulip = document.createElement('div');
+                tulip.innerHTML = '🌷'; 
+                tulip.classList.add('falling-tulip');
+                
+                // สุ่มตำแหน่งปล่อยดอกไม้ให้กระจายทั่วหน้าจอ
+                tulip.style.left = Math.random() * 100 + 'vw';
+                
+                // สุ่มขนาดดอกไม้
+                var size = Math.random() * 1 + 1.5; 
+                tulip.style.fontSize = size + 'em';
+                
+                // สุ่มระยะเวลาตกลงมา
+                var fallDuration = Math.random() * 4 + 6;
+                tulip.style.animationDuration = fallDuration + 's, 3s'; 
+                
+                document.body.appendChild(tulip);
+                
+                // ลบดอกไม้ออกเมื่อตกถึงพื้น
+                setTimeout(function() {
+                    tulip.remove();
+                }, fallDuration * 1000);
+                
+            }, 300); 
+        }
+
+        // สั่งให้พลุเริ่มยิงทันทีที่หน้าเว็บโหลดเสร็จ
+        window.onload = shootFireworks;
+    </script>
+
+</body>
+</html>
