@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday!</title>
     
+    <!-- นำเข้าฟอนต์ลายมือ 'Mali' จาก Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Mali:wght@400;600&display=swap" rel="stylesheet">
@@ -23,29 +24,33 @@
             overflow: hidden; /* ป้องกันหน้าจอเลื่อนเวลาพลุเด้ง */
         }
 
-        /* ตกแต่งกล่องข้อความ */
+        /* ตกแต่งกล่องข้อความ (ปรับปรุงสำหรับมือถือ) */
         .message-box {
             background: rgba(255, 255, 255, 0.95);
-            padding: 40px;
+            padding: 30px 20px; /* ลดระยะขอบด้านในให้พอดีกับจอมือถือ */
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
             text-align: center;
             z-index: 10; /* ให้อยู่เหนือเอฟเฟกต์พลุ */
-            max-width: 80%;
+            width: 85%; /* กำหนดความกว้างให้พอดีจอ ไม่ชิดขอบเกินไป */
+            max-width: 400px; /* ล็อคขนาดสูงสุดไว้เผื่อเปิดในคอม */
+            box-sizing: border-box; /* ป้องกันกล่องขยายตัวผิดปกติ */
             animation: popIn 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         h1 {
             color: #ff1493;
-            margin-bottom: 15px;
-            font-size: 2.5em;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 2em; /* ลดขนาดหัวข้อลงนิดหน่อย */
             font-weight: 600;
         }
 
         p {
             color: #333;
-            font-size: 1.2em;
-            line-height: 1.6;
+            font-size: 1.1em; /* ลดขนาดข้อความลงให้อ่านง่าย จัดทรงสวย */
+            line-height: 1.5;
+            margin-bottom: 0;
         }
 
         /* อนิเมชันให้กล่องข้อความเด้งขึ้นมาตอนเปิด */
@@ -75,15 +80,18 @@
             to { transform: translateX(20px) rotate(15deg); }
         }
     </style>
+    <!-- เรียกใช้ Library สำหรับทำเอฟเฟกต์พลุ -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 </head>
 <body>
 
+    <!-- ส่วนของข้อความอวยพร -->
     <div class="message-box">
         <h1>Happy Birthday🎂🐰🌷</h1>
         <p>สุขสันต์วันเกิดนะค้าบ<br>ปีนี้ 23 แล้วนะเก่งมากเลยที่เดินทางมาถึงวันนี้ได้ ต่อไปนี้ก็ขอให้มีความสุขเยอะ ๆ ทำอะไรให้สมหวังทุก ๆ อย่าง ประสบความสำเร็จมีเงินเยอะ ๆ เลย และก็อยู่ด้วยกันไปนาน ๆ นะ รักมากกก🤍</p>
     </div>
 
+    <!-- ส่วนของสคริปต์ควบคุมพลุและดอกไม้ -->
     <script>
         function shootFireworks() {
             var duration = 10 * 1000; // ระยะเวลาที่พลุจะยิง (10 วินาที)
